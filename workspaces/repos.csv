@@ -1,0 +1,8 @@
+Distro,Rolling,Repo Format,Has Release Date,Has Filelists,Man Package,Status,Notes
+Chimera,Yes,APK v3,indirect (http last-modified on Packages.adb),N,Seperate,Basic function,
+Rocky,No,CRF:RPM,Y (revision in repomd),Y,combined,Not done yet,
+Ubuntu,No,DEB,Y (InRelease),Y,combined,Not done yet,
+OpenSUSE Leap,No,CRF:RPM,Y (revision in repomd),Y,combined,Not done yet,
+OpenSUSE Tumbleweed,Yes,CRF:RPM,Y (revision in repomd),N ,combined,Not done yet,
+Arch,Yes,pacman,?,?,?,Not done yet,"Might not do, already served."
+FreeBSD,No,,,,,,
