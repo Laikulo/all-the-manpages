@@ -13,7 +13,8 @@ CREATE TABLE sources (
 DROP TABLE IF EXISTS packages;
 CREATE TABLE packages (
 	id INTEGER PRIMARY KEY,
-	source INTEGER NOT NULL REFERENCES sources(id)
+	source INTEGER NOT NULL REFERENCES sources(id),
+	name TEXT NOT NULL
 );
 
 DROP TABLE IF EXISTS packageVersions;
