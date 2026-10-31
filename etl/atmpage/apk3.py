@@ -9,6 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 class Apk3Repo(BaseRepo):
+    _ARCH = 'x86_64'
     def __init__(self, config:dict):
         self._trust_file_time = bool(config.get('trust_time', False))
         self._url = config['url']
@@ -94,7 +95,9 @@ class Apk3Repo(BaseRepo):
         ver = "-".join(ver_toks)
 
         return PackageRef(self, name, ver)
-        
+
+    def pkgs_with_manpages(self) -> Sequence[PackageRef]:
+        yield from (pkg for pkg in self.apk_list('*-man'))
 
 
     @cache
@@ -102,6 +105,6 @@ class Apk3Repo(BaseRepo):
         if not self._trust_file_time:
             return None
         else:
-            return get_http_timerev(self._url + "/Packages.adb")
+            return get_http_timerev(self._url + f"/{self._ARCH}/Packages.adb")
     
     

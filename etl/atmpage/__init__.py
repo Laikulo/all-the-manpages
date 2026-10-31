@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import Optional, Sequence
 from dataclasses import dataclass
 
 class BaseRepo(ABC):
@@ -31,6 +31,14 @@ class BaseRepo(ABC):
     def refresh(self) -> None:
         """
             Unconditionall refresh metadata. This may result in initalizing the package manager if it was not needed earlier.
+        """
+        ...
+
+    @abstractmethod
+    def pkgs_with_manpages(self) -> Sequence[PackageRef]:
+        """
+            List all packages with manpages.
+            Raises NotImplementedError if this repo doesn't support it
         """
         ...
 
