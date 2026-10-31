@@ -1,0 +1,5 @@
+FROM haun.guru/apkv3:latest
+COPY --from=chimeralinux/chimera /usr/lib/apk/keys /lib/apk/keys
+COPY --from=chimeralinux/chimera /usr/lib/apk/repositories.d /lib/apk/repositories.d
+COPY --from=chimeralinux/chimera /etc/ssl/certs.pem /etc/ssl/cert.pem
+
