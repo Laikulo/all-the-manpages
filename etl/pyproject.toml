@@ -10,3 +10,6 @@ dependencies = [
 	"sqlmodel"
 ]
 version = "0.0.1"
+
+[project.scripts]
+atmpage-etl = "atmpage.__main__:main"

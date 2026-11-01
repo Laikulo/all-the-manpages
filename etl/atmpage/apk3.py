@@ -3,7 +3,7 @@ from .util import get_http_timerev
 from functools import cache, cached_property
 from tempfile import TemporaryDirectory
 from pathlib import Path
-from subprocess import run as runproc
+from subprocess import run as runproc, CalledProcessError
 
 import logging
 logger = logging.getLogger(__name__)
@@ -66,7 +66,14 @@ class Apk3Repo(BaseRepo):
 
         apk_args += args
         logging.debug(f'APK: {apk_args}')
-        apk_proc = runproc(('apk', *apk_args), check=True, capture_output=True)
+        try:
+            apk_proc = runproc(('apk', *apk_args), check=True, capture_output=True)
+        except CalledProcessError as e:
+            for line in e.stdout.splitlines():
+                logging.debug(f'APKout: {line}')
+            for line in e.stderr.splitlines():
+                logging.debug(f'APKerr: {line}')
+            raise e
         for line in apk_proc.stdout.splitlines():
             logging.debug(f'APKout: {line}')
         for line in apk_proc.stderr.splitlines():
@@ -97,7 +104,13 @@ class Apk3Repo(BaseRepo):
         return PackageRef(self, name, ver)
 
     def pkgs_with_manpages(self) -> Sequence[PackageRef]:
+        # This assumes packages are like they are in chimera. Alpine doesn't follow this in any meaningful way.
         yield from (pkg for pkg in self.apk_list('*-man'))
+
+    def fetch_package(self, name, ver):
+        self._apk(('fetch', '--output', self._tmpdir, f"{name}-{ver}"))
+        return None
+        
 
 
     @cache

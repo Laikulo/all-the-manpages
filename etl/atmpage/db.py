@@ -18,14 +18,14 @@ class DBPackage(SQLModel, table=True):
     __tablename__ = "packages"
     
     id: int | None = Field(default=None, primary_key=True)
-    source: int  #TODO: Foreign Key
+    source: int = Field(foreign_key='sources.id')
     name: str
 
 class DBPackageVersion(SQLModel, table=True):
     __tablename__ = 'packageVersions'
     
     id: int | None = Field(default=None, primary_key=True)
-    package: int   #TODO: Foreign Key
+    package: int = Field(foreign_key='packages.id')
     version: str
     first_seen: datetime
     processed_on: datetime | None

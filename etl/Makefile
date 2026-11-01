@@ -19,6 +19,9 @@ chimera.container: chimera-base.container chimera.container.d/$(WHLNAME)
 %.container: %.container.d/Containerfile
 	podman build -t atmetl-$* $*.container.d --iidfile=$@
 
+devcont: chimera-base.container
+	podman run --rm -it --userns keep-id -v $(CURDIR)/..:/mnt -w /mnt $(file < $<) /bin/sh -c 'pip install -e /mnt/etl; exec sh -i'
+
 clean:
 	rm -f $(foreach c,$(CONTAINERS),$c.container) \
 		chimera.container.d/*.whl

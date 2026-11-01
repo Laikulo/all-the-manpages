@@ -20,8 +20,30 @@ CREATE TABLE packages (
 DROP TABLE IF EXISTS packageVersions;
 CREATE TABLE packageVersions (
 	id INTEGER PRIMARY KEY,
-	package INTEGER NOT NULL REFERENCES sources(id),
+	package INTEGER NOT NULL REFERENCES packages(id),
 	version TEXT NOT NULL,
 	first_seen DATETIME NOT NULL,
 	processed_on DATETIME
 );
+
+DROP TABLE IF EXISTS manpages;
+CREATE TABLE manpages (
+	id INTEGER PRIMARY KEY,
+	section TEXT NOT NULL,
+	title TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS manpageVersions;
+CREATE TABLE manpageVersions (
+	id INTEGER PRIMARY KEY,
+	manpage INTEGER NOT NULL REFERENCES manpages(id),
+	hash TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS rel_pVer_mVer;
+CREATE TABLE rel_pVer_mVer (
+	packageVer INTEGER NOT NULL REFERENCES packageVersion(id),
+	manpageVer INTEGER NOT NULL REFERENCES manpageVersion(id),
+	PRIMARY KEY (packageVer,manpageVer)
+);
+
