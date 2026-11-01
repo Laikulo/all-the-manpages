@@ -47,6 +47,8 @@ def main():
 
         if _do_procbatch:
             src = db_sources[0]
+            # Not great, would be best to reuse these in a session
+            # Consider making get_repo cache them until dead
             repo = get_repo(src.config)
             repo.refresh()
             pkgs_todo = session.execute(select(DBPackageVersion,DBPackage).join(DBPackage).where(DBPackageVersion.processed_on == None).where(DBPackage.source == src.id))
