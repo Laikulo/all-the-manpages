@@ -28,6 +28,7 @@ class DBPackageVersion(SQLModel, table=True):
     package: int   #TODO: Foreign Key
     version: str
     first_seen: datetime
+    processed_on: datetime | None
 
 @cache
 def get_db(url):

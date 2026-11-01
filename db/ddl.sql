@@ -22,5 +22,6 @@ CREATE TABLE packageVersions (
 	id INTEGER PRIMARY KEY,
 	package INTEGER NOT NULL REFERENCES sources(id),
 	version TEXT NOT NULL,
-	first_seen DATETIME NOT NULL
+	first_seen DATETIME NOT NULL,
+	processed_on DATETIME
 );

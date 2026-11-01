@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 run_time=datetime.now(UTC)
 
-with get_session("sqlite:////home/aaron/z/all-the-manpages/db/test.db") as session:
+with get_session("sqlite:////mnt/db/test.db") as session:
     db_sources = session.exec(select(DBSource))
     for src in db_sources:
         repo = get_repo(src.config)
@@ -30,16 +30,12 @@ with get_session("sqlite:////home/aaron/z/all-the-manpages/db/test.db") as sessi
                 pkg_id = new_pkg.id
             else:
                 pkg_id = pkg_ids[pkg.name]
-            print(pkg_id)
-            vers_this_pkg = session.exec(select(DBPackageVersion).where(DBPackageVersion.package == pkg_id))
-            for x in vers_this_pkg:
-                print(x)
-            if not pkg.version in (p.version for p in vers_this_pkg):
+            this_vers = session.exec(select(DBPackageVersion).where(DBPackageVersion.package == pkg_id and DBPackageVersion.version == pkg.version)).one_or_none()
+            if not this_vers:
                 this_vers = DBPackageVersion(package=pkg_id, version=pkg.version, first_seen=run_time)
                 session.add(this_vers)
-                
-                
         src.last_processed = run_time
         session.add(src)
     session.commit()
+    # At this point, all packagevers have been populated.
 
