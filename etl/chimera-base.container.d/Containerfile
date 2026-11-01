@@ -1,0 +1,12 @@
+FROM chimeralinux/chimera:latest
+RUN \
+	sd-sysusers --inline 'u chimera 1000 "container user" /home/chimera -' && \
+	install -d -o chimera -g chimera -m 755 /home/chimera
+RUN apk update && \
+    apk add python && \
+    apk cache purge && \ 
+    rm /var/cache/apk/APKINDEX*
+USER chimera
+WORKDIR /home/chimera
+RUN python3 -m venv --prompt atmetl /home/chimera/.venv
+ENV VIRTUAL_ENV=/home/chimera/.venv PATH=/home/chimera/.venv/bin:$PATH

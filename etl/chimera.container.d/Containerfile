@@ -1,0 +1,4 @@
+FROM localhost/atmetl-chimera-base:latest
+ARG WHL_NAME=atmpage_etl-0.0.1-py3-none-any.whl
+RUN --mount=type=bind,src=${WHL_NAME},dst=/tmp/${WHL_NAME} \
+	python3 -m pip install --no-cache-dir "/tmp/${WHL_NAME}"

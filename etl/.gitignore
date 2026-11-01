@@ -1,2 +1,6 @@
 __pycache__
 *.pyc
+/dist
+*.whl
+/*.egg-info
+/*.container
